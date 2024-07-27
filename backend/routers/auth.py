@@ -54,6 +54,8 @@ def verify_jwt(credentials: HTTPAuthorizationCredentials = Depends(security)):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Invalid token"
         )
+    
+
 
 
 def create_access_token(data: dict, expires_delta: timedelta):
