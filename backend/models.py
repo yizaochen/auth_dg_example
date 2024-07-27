@@ -9,3 +9,4 @@ class Users(Base):
     username = Column(TEXT)
     password = Column(TEXT)
     roles = Column(TEXT)  # role_code_1,role_code_2,role_code_3
+    refreshToken = Column(TEXT, nullable=True)

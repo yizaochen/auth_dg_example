@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append("..")
 
 from fastapi import APIRouter, status, HTTPException, Depends
@@ -19,12 +20,14 @@ router = APIRouter(
 class NewUserRequest(BaseModel):
     user: str
     pwd: str
+    roles: str
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def handle_new_user(new_user: NewUserRequest, db: Session = Depends(get_db)):
     user = new_user.user
     pwd = new_user.pwd
+    roles = new_user.roles
 
     if not user or not pwd:
         raise HTTPException(
@@ -46,16 +49,9 @@ async def handle_new_user(new_user: NewUserRequest, db: Session = Depends(get_db
         )
 
         # Store the new user
-        new_user_data = Users(username=user, password=hashed_pwd)
-
-        # new_user_data = {
-        #     "username": user,
-        #     "roles": {"User": 2001},
-        #     "password": hashed_pwd,
-        # }
-        # usersDB["users"].append(new_user_data)
-        # save_users(usersDB["users"])
-
+        new_user_data = Users(username=user, password=hashed_pwd, roles=roles)
+        db.add(new_user_data)
+        db.commit()
         return JSONResponse(content={"success": f"New user {user} created!"})
 
     except Exception as e:
