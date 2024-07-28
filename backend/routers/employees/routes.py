@@ -1,20 +1,13 @@
 from typing import List
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel
 
-from .auth import verify_jwt
+from core.security import verify_jwt
 
 
 router = APIRouter(
     prefix="/employees",
     tags=["employees"],
 )
-
-
-class Employee(BaseModel):
-    id: int
-    firstname: str
-    lastname: str
 
 
 @router.get("/", response_model=List[Employee])

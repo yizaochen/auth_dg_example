@@ -1,12 +1,7 @@
-import sys
-
-sys.path.append("..")
-
 from fastapi import APIRouter, Request, Depends, Response, status
 from sqlalchemy.orm import Session
-
-from models import Users
-from database import get_db
+from routers.users.models import Users
+from core.database import get_db
 
 
 router = APIRouter(

@@ -5,22 +5,16 @@ sys.path.append("..")
 from fastapi import APIRouter, status, HTTPException, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
-from pydantic import BaseModel
 import bcrypt
 
-from database import get_db
-from models import Users
+from core.database import get_db
+from routers.users.models import Users
+from routers.register.schemas import NewUserRequest
 
 router = APIRouter(
     prefix="/register",
     tags=["register"],
 )
-
-
-class NewUserRequest(BaseModel):
-    user: str
-    pwd: str
-    roles: str
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)

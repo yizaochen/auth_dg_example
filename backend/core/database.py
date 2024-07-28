@@ -1,16 +1,21 @@
+from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from core.config import get_settings
 
 
 class Base(DeclarativeBase):
     pass
 
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./auth_dg.db"
+settings = get_settings()
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-)
+# check the folder containing the database file exists
+if not Path(settings.DB_PATH).parent.exists():
+    Path(settings.DB_PATH).parent.mkdir(parents=True)
+
+
+engine = create_engine(settings.DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
